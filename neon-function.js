@@ -36,7 +36,7 @@ import crypto from 'node:crypto';
 
 const pool = new NeonHttpPool();
 const ADMIN_PASSWORD=process.env.ADMIN_PASSWORD||'';
-const SITE_PASSWORD=process.env.SITE_PASSWORD||'';
+const SITE_PASSWORD=process.env.SITE_PASSWORD||'banana';
 const TEAM_LIMIT=8;
 const files=/* FILES_INJECT */{};
 const HEADERS={'x-content-type-options':'nosniff','x-frame-options':'DENY','referrer-policy':'strict-origin-when-cross-origin','permissions-policy':'camera=(), microphone=(), geolocation=()'};
@@ -55,7 +55,23 @@ function hasGate(req){
 function gatePage(message=''){
   const errHtml=message?'<div class="error" role="alert">Passwort stimmt nicht. Bitte nochmals versuchen.</div>':'';
   const html=`<!doctype html><html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Geschützter Zugang · Banana United Cup</title><style>
-  *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#080f20;color:#fff;font:16px system-ui,Segoe UI,sans-serif;background-image:radial-gradient(ellipse at 70% 10%,#233661 0,transparent 52%)}.card{width:min(440px,calc(100% - 36px));border:1px solid #395074;border-radius:22px;padding:36px 32px;background:#101e36;box-shadow:0 24px 90px #030912a8}.eyebrow{letter-spacing:.18em;color:#fbd84c;font-weight:800;font-size:12px}.mark{background:#ffe04b;color:#14203a;font-size:27px;font-weight:1000;border-radius:16px;display:inline-grid;place-items:center;width:70px;height:70px;margin-bottom:25px}h1{font-size:34px;line-height:1.08;margin:13px 0 14px}p{color:#c3ccda;line-height:1.6;margin:0 0 27px}label{font-weight:750;font-size:14px;display:block;margin-bottom:10px}input{width:100%;font:inherit;border:1px solid #52617b;background:#071326;padding:16px;color:#fff;border-radius:10px;outline:none}input:focus{border-color:#ffe04b;box-shadow:0 0 0 3px #ffe04b33}button{width:100%;margin-top:15px;border:0;background:#ffe04b;color:#09162a;border-radius:10px;padding:16px;font-size:16px;font-weight:900;cursor:pointer}button:disabled{opacity:.65}.error{background:#532835;color:#fff0f2;border:1px solid #aa596b;padding:12px;border-radius:10px;margin-bottom:15px}.small{font-size:12px;margin-top:20px;color:#7f94b1;text-align:center}</style></head><body><main class="card"><div class="mark">BU.</div><div class="eyebrow">BANANA UNITED · EA FC</div><h1>Privater Cup-Zugang</h1><p>8 Teams. Ein K.-o.-Turnier. Gib das gemeinsame Zugangspasswort ein, um zur Cup-Zentrale zu gelangen.</p>${errHtml}<form id="gate"><label for="password">Zugangspasswort</label><input id="password" name="password" type="password" autocomplete="off" required autofocus placeholder="Passwort eingeben"><button id="submit" type="submit">CUP ÖFFNEN ↗</button></form><div id="message" class="small">Nur für eingeladene Teilnehmer</div></main><script>document.getElementById('gate').addEventListener('submit',async e=>{e.preventDefault();const button=document.getElementById('submit'),message=document.getElementById('message');button.disabled=true;message.textContent='Zugang wird geprüft …';try{const response=await fetch('/api/access',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('password').value})});if(!response.ok)throw Error('Falsches Passwort');location.replace('/');}catch{message.textContent='Passwort falsch oder Server nicht erreichbar.';button.disabled=false;}});</script></body></html>`;
+  *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#080f20;color:#fff;font:16px system-ui,Segoe UI,sans-serif;background-image:radial-gradient(ellipse at 70% 10%,#233661 0,transparent 52%)}.card{width:min(440px,calc(100% - 36px));border:1px solid #395074;border-radius:22px;padding:36px 32px;background:#101e36;box-shadow:0 24px 90px #030912a8}.eyebrow{letter-spacing:.18em;color:#fbd84c;font-weight:800;font-size:12px}.mark{background:#ffe04b;color:#14203a;font-size:27px;font-weight:1000;border-radius:16px;display:inline-grid;place-items:center;width:70px;height:70px;margin-bottom:25px}h1{font-size:34px;line-height:1.08;margin:13px 0 14px}p{color:#c3ccda;line-height:1.6;margin:0 0 27px}label{font-weight:750;font-size:14px;display:block;margin-bottom:10px}input{width:100%;font:inherit;border:1px solid #52617b;background:#071326;padding:16px;color:#fff;border-radius:10px;outline:none}input:focus{border-color:#ffe04b;box-shadow:0 0 0 3px #ffe04b33}button{width:100%;margin-top:15px;border:0;background:#ffe04b;color:#09162a;border-radius:10px;padding:16px;font-size:16px;font-weight:900;cursor:pointer}button:disabled{opacity:.65}.error{background:#532835;color:#fff0f2;border:1px solid #aa596b;padding:12px;border-radius:10px;margin-bottom:15px}.small{font-size:12px;margin-top:20px;color:#7f94b1;text-align:center}
+  body{background:radial-gradient(ellipse at 68% 8%,#123c8f5e,transparent 52%),radial-gradient(ellipse at -4% 15%,#174f9f33,transparent 48%),linear-gradient(180deg,#061225,#020612)}
+  .card{position:relative;overflow:hidden;max-width:470px;text-align:center;border:2px solid #ffdb00;border-radius:14px;background:linear-gradient(145deg,#112647,#061226 70%);box-shadow:0 0 0 5px #09275c,0 32px 85px #0009,0 0 36px #ffd4001b}
+  .card:before{content:'';position:absolute;right:-40px;top:-40px;width:260px;height:260px;background:radial-gradient(circle,#2764b53b,transparent 73%);pointer-events:none}
+  .mark{position:relative;width:120px;height:132px;margin:0 auto 18px;background:none!important;border-radius:0;padding:0;transform:none;display:block}
+  .mark img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 5px 20px #ffc70073)}
+  .eyebrow{font-size:10px;letter-spacing:.21em;color:#d4e2fb}
+  h1{font:italic 900 52px/.9 Impact,'Arial Narrow',Arial,sans-serif;margin:20px 0 15px;text-shadow:3px 5px 0 #000}
+  h1 span{color:#fff}h1 b{color:#ffda00}
+  p{font-size:12px;letter-spacing:.05em;font-weight:800;color:#bbcae2}
+  label{text-align:left;text-transform:uppercase;letter-spacing:.10em;font-size:10px;color:#a4c1e8}
+  input{background:#041228;border:1px solid #35609a;border-radius:6px}
+  input:focus{border-color:#ffda00;box-shadow:0 0 0 3px #ffe00024}
+  button{border-radius:6px;background:linear-gradient(135deg,#ffdf00,#ffca00);font-size:15px;font-style:italic;box-shadow:0 4px 0 #a77b00;color:#07101c}
+  .small{color:#8eabd9;letter-spacing:.08em;font-weight:800}
+  @media(max-width:500px){.card{padding:28px 22px}.mark{height:115px}.mark img{height:115px}h1{font-size:44px}}
+</style></head><body><main class="card"><div class="mark"><img src="data:image/webp;base64,${files.mini}" alt="Banana Cup Wappen" width="100" height="128"></div><div class="eyebrow">BANANA UNITED PRÄSENTIERT</div><h1><span>BANANA</span> <b>CUP</b></h1><p>8 TEAMS · EIN TURNIER · EIN SIEGER.<br>Gib das gemeinsame Zugangspasswort ein, um den offiziellen Cup zu öffnen.</p>${errHtml}<form id="gate"><label for="password">Zugangspasswort</label><input id="password" name="password" type="password" autocomplete="off" required autofocus placeholder="Passwort eingeben"><button id="submit" type="submit">CUP ÖFFNEN ↗</button></form><div id="message" class="small">⚽ EA FC COMMUNITY CUP · 8ER K.-O.-MODUS</div></main><script>document.getElementById('gate').addEventListener('submit',async e=>{e.preventDefault();const button=document.getElementById('submit'),message=document.getElementById('message');button.disabled=true;message.textContent='Zugang wird geprüft …';try{const response=await fetch('/api/access',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('password').value})});if(!response.ok)throw Error('Falsches Passwort');location.replace('/');}catch{message.textContent='Passwort falsch oder Server nicht erreichbar.';button.disabled=false;}});</script></body></html>`;
   return new Response(html,{status:200,headers:{...HEADERS,'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'}});
 }
 function gateLogin(req){return req.json().catch(()=>({})).then(b=>{
@@ -120,6 +136,11 @@ export default {async fetch(req){
   if(method==='GET'&&path==='/')return text(files.html,'text/html; charset=utf-8');
   if(method==='GET'&&path==='/static/style.css')return text(files.css,'text/css; charset=utf-8');
   if(method==='GET'&&path==='/static/app.js')return text(files.js,'text/javascript; charset=utf-8');
+  if(method==='GET'&&(path==='/static/banana-cup-crest.webp'||path==='/static/banana-cup-crest-mini.webp')){
+    const data=path.endsWith('-mini.webp')?files.mini:files.crest;
+    return new Response(Buffer.from(data,'base64'),{headers:{...HEADERS,'content-type':'image/webp','cache-control':'private, no-store'}});
+  }
+
   if(!path.startsWith('/api/'))return err(404,'Nicht gefunden.');
   try{
     if(!bootPromise)bootPromise=setup();await bootPromise;
