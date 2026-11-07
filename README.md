@@ -1,32 +1,40 @@
-# Banana United Cup Central
+# 🍌 Banana Cup — EA FC Community-Turnier von Banana United
 
-Ein öffentlich erreichbarer EA-FC-Pro-Clubs-Cup für Banana United. Vereinsanmeldung mit Name und gemeinsamem Passwort, optionaler Kader, Spielplan, Resultatmeldung, Tabellen und automatischer K.-o.-Baum.
+**Live-Deployment:** https://br-still-star-b99xns2r-bananacup.compute.c-7.eu-central-1.aws.neon.tech/
 
-## Aktuelle Veröffentlichung
+**Hosting:** Neon Functions + Neon PostgreSQL im bestehenden Gratisprojekt (keine neue Domain, keine Zahlungsmethode).
 
-- **Cup-URL:** https://br-still-star-b99xns2r-bananacup.compute.c-7.eu-central-1.aws.neon.tech/
-- **Server:** Neon Functions (Node.js 24) – kostenlose Infrastruktur
-- **Datenbank:** Neon PostgreSQL `banana_cup`, Projekt `gentle-pond-89083797`, Region Frankfurt
-- **Status (7. November 2026):** Deployment 4 erfolgreich; Datenbankschema und Default-Cup angelegt. Externer HTTP-Funktionstest war über den verwendeten Zugriffskanal nicht möglich; die Erreichbarkeit im Browser ist noch zu bestätigen.
+## Branding (7. November 2026)
 
-**Keine Zahlungsmethode und kein kostenpflichtiger Hostingtarif verwendet.**
+Die Website wurde anhand der vom Verein gelieferten Banana-Cup-Designvorlage neu gestaltet:
+- Originalgetreues, aus der Designvorlage ausgeschnittenes Wappen als WebP mit transparenten Rändern
+- Stadion-Navy, Banana Yellow (`#FFD400`), Deep Black und Royal Blue
+- Markante Überschriften, Flutlichtatmosphäre, Cup-Hero und neue Turnierkarten
+- Desktop- und mobiloptimierte Oberfläche
+- Interaktiver 8er-K.-o.-Turnierbaum (4 Viertelfinals / 2 Halbfinals / 1 Finale), auch vor Auslosung als Vorschau
 
-## Code und Architektur
+## Anmeldung & Schutz
 
-- `neon-function.js`: produktiv deployter Node-Server, parallel zum ursprünglichen Python-Backend
-- `static/`: HTML/CSS/JavaScript der Website (beim Neon-Deployment in die Serverfunktion eingebettet)
-- `app.py`: ursprünglicher FastAPI-Server für alternative Hosts
-- `requirements.txt`: Python-Abhängigkeiten für alternative Hosts
+Die **gesamte Website und die API** sind durch eine vorgeschaltete gemeinsame Passwortabfrage geschützt (wie vom Veranstalter gewünscht). Team-Accounts melden sich zusätzlich mit Teamname und eigenem Passwort an. Die Turnierleitung nutzt einen separaten Admin-Login.
 
-Der Neon-Function-Server benötigt `DATABASE_URL` und `ADMIN_PASSWORD` als **private Umgebungsvariablen**. Keine Zugangsdaten in dieses Repository hochladen.
+- Start nur mit exakt 8 angemeldeten Teams
+- Resultate dürfen die beteiligten Vereine und Admins eintragen
+- Sieger rücken automatisch ins Halbfinale bzw. Finale auf
+- Spieltermine, Kader und Vereinsfarben sind optional
+- Das gemeinsame Cup-Passwort ist bewusst ein einfacher Zugangsschutz für eine kleine eingeladene Gruppe und **kein Ersatz für individuelle Accounts**
 
-## Lokal testen (Python-Version)
+## Dateien
 
-```bash
-pip install -r requirements.txt
-uvicorn app:app --reload
-```
+- `static/index.html`: Website-Markup
+- `static/style.css`: Banana-Cup-Branddesign
+- `static/app.js`: UI für Home, Turnierbaum, Spielplan, Vereine und Verwaltung
+- `static/banana-cup-crest.webp`: aus der gelieferten Designvorlage abgeleitetes Wappen
+- `static/banana-cup-crest-mini.webp`: kompakte Wappenversion
+- `neon-function.js`: serverseitige Passwortsperre, Neon-DB-Anbindung und Cup-API
+- `app.py`: historische FastAPI-Version für alternatives Hosting, nicht die live genutzte Laufzeit
 
-## Hinweise
+**Hinweis:** Im Neon-Deployment sind HTML, CSS, JS und die Wappen-Dateien in das Serverbundle eingebettet. Die `DATABASE_URL` und das administrative Passwort liegen nur als private Server-Umgebungsvariablen vor und gehören nicht in GitHub.
 
-Ein kostenloser Tarif kann technische Limits und sich ändernde Nutzungsbedingungen haben. Vor einer öffentlichen Turnierankündigung Registrierung, Vereinslogin, Ergebnisübermittlung und Admin-Zugang in einem echten Browser testen. Persönliche Vereinspasswörter nicht wiederverwenden.
+## Verifikation
+
+Die Oberfläche wurde lokal in Chromium auf Desktop und Handy überprüft, einschließlich sichtbarem 7-Partien-Bracket. Die serverseitige Zugangssperre (richtiges/falsches Passwort, geschützte API, Bildausgabe) wurde lokal getestet. Neon bestätigt das aktive Deployment. Ein vollständiger externer HTTP-End-to-End-Test ist über den aktuellen Entwicklungszugriff nicht möglich.
