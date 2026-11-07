@@ -1,26 +1,32 @@
-# Banana United | Cup Central
+# Banana United Cup Central
 
-Website für einen laufenden EA-FC-Pro-Clubs-Cup: **Vereinsanmeldung nur mit Namen und Passwort**, optionaler Kader, Spielplan, Tabellen, Resultatmeldungen und automatische K.-o.-Phase.
+Ein öffentlich erreichbarer EA-FC-Pro-Clubs-Cup für Banana United. Vereinsanmeldung mit Name und gemeinsamem Passwort, optionaler Kader, Spielplan, Resultatmeldung, Tabellen und automatischer K.-o.-Baum.
 
-## Online bringen: kostenlos und ohne Zahlungsmittel
+## Aktuelle Veröffentlichung
 
-**[Anleitung für Vercel Hobby + Neon Free](DEPLOY-VERCEL.md)**
+- **Cup-URL:** https://br-still-star-b99xns2r-bananacup.compute.c-7.eu-central-1.aws.neon.tech/
+- **Server:** Neon Functions (Node.js 24) – kostenlose Infrastruktur
+- **Datenbank:** Neon PostgreSQL `banana_cup`, Projekt `gentle-pond-89083797`, Region Frankfurt
+- **Status (7. November 2026):** Deployment 4 erfolgreich; Datenbankschema und Default-Cup angelegt. Externer HTTP-Funktionstest war über den verwendeten Zugriffskanal nicht möglich; die Erreichbarkeit im Browser ist noch zu bestätigen.
 
-Die bisherige Render-Free-Variante kann eine Zahlungsmethode verlangen und kommt deshalb für den ausdrücklich gewünschten Betrieb ohne Zahlungsdaten nicht infrage.
+**Keine Zahlungsmethode und kein kostenpflichtiger Hostingtarif verwendet.**
 
-- Hosting: Vercel Hobby, nur für **nicht kommerzielle** Nutzung.
-- Datenbank: bereits vorbereitetes Neon Free PostgreSQL.
-- Geheimnisse: `DATABASE_URL`, `REQUIRE_PERSISTENT_DB=1` und `ADMIN_PASSWORD` **nur** in privaten Umgebungsvariablen.
+## Code und Architektur
 
-**Ausführliche Website-Dokumentation:** [docs/README.md](docs/README.md).
+- `neon-function.js`: produktiv deployter Node-Server, parallel zum ursprünglichen Python-Backend
+- `static/`: HTML/CSS/JavaScript der Website (beim Neon-Deployment in die Serverfunktion eingebettet)
+- `app.py`: ursprünglicher FastAPI-Server für alternative Hosts
+- `requirements.txt`: Python-Abhängigkeiten für alternative Hosts
 
-## Lokal testen
+Der Neon-Function-Server benötigt `DATABASE_URL` und `ADMIN_PASSWORD` als **private Umgebungsvariablen**. Keine Zugangsdaten in dieses Repository hochladen.
+
+## Lokal testen (Python-Version)
 
 ```bash
 pip install -r requirements.txt
-ADMIN_PASSWORD='selbst-waehlen' uvicorn app:app --reload
+uvicorn app:app --reload
 ```
 
-Unter Windows PowerShell: zuerst `$env:ADMIN_PASSWORD='selbst-waehlen'`, dann `uvicorn app:app --reload`. Lokal wird SQLite verwendet; online ist Neon zwingend.
+## Hinweise
 
-_Keine Verbindung oder ein Zahlungsauftrag wird durch das GitHub-Repository selbst angelegt._
+Ein kostenloser Tarif kann technische Limits und sich ändernde Nutzungsbedingungen haben. Vor einer öffentlichen Turnierankündigung Registrierung, Vereinslogin, Ergebnisübermittlung und Admin-Zugang in einem echten Browser testen. Persönliche Vereinspasswörter nicht wiederverwenden.
